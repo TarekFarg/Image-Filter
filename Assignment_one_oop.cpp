@@ -1,3 +1,12 @@
+// FCAI – OOP Programming – 2023 - Assignment 1
+// Program Name: CS213-2023-20220009-20220171-NO ID-Part1.cpp
+// Last Modification Date:	9/10/2023
+// Author1 and ID :	Tarek Mohamed Abdullah farg     20220171
+// Author2 and ID :	ahmad osama mahmoud mohamed     20220009
+// Author3 and ID :	Alaa Eldin Hassan Ahmed         NO ID
+// Purpose: Creating a program to edit images
+
+
 #include <iostream>
 #include <fstream>
 #include <cstring>
@@ -158,7 +167,12 @@ void InvertImage(){
 }
 
 void MergeImages(){
-    // code
+    loadSecImage();
+    for (int i = 0; i < SIZE ; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            image[i][j]=(image[i][j]+SecImage[i][j])/2;         //we are taking the average of the two pixels
+        }
+    }
 }
 
 void  Flip_Image()
@@ -215,11 +229,47 @@ void Detect_Image_Edges()
 void EnlargeImage(){
     // code
 }
+
 void ShrinkImage(){
-    // code
+    int x;
+    cout<<"Which quarter to enlarge 1, 2, 3 or 4?"<<endl;
+    cin>>x;
+    for (int i = 0; i < SIZE ; ++i) {          //Shrink
+        for (int j = 0; j < SIZE ; ++j) {
+            SecImage[i/x][j/x]=image[i][j];
+        }
+    }
+    for (int i = 0; i < SIZE; ++i) {        //to make the rest of image white
+        for (int j = 0; j < SIZE; ++j) {
+            if(i<SIZE/x && j<SIZE/x){
+                image[i][j] = SecImage[i][j];
+            }
+            else
+                image[i][j]=255;
+        }
+    }
 }
+
 void DarkenandLighten(){
-    // code
+    cout<<"Do you want to (d)arken or (l)ighten?\n";
+    char x;cin>>x;
+    int y;
+    y=(255*50)/100;      //The amount by which to darken or lighten the image.
+
+    if(x=='d'){                             //darken
+        for (int i = 0; i < SIZE; ++i) {
+            for (int j = 0; j < SIZE; ++j) {
+                image[i][j]=max(0,image[i][j]-y);
+            }
+        }
+    }
+    else{                                   //lighten
+        for (int i = 0; i < SIZE; ++i) {
+            for (int j = 0; j < SIZE; ++j) {
+                image[i][j]=min(255,image[i][j]+y);
+            }
+        }
+    }
 }
 
 void Mirror_half_Image()
@@ -268,7 +318,35 @@ void Shuffle_Image()
 }
 
 void BlurImage(){
-    // code
+    char NewImage[SIZE][SIZE];
+    int dx8[8] = {0, 0, 1, -1, 1, -1, -1, 1};
+    int dy8[8] = {1, -1, 0, 0, 1, -1, 1, -1};
+    for (int i = 1; i < SIZE-1 ; ++i) {
+        for (int j = 1; j < SIZE-1; ++j) {             //we are using kernel for blur and all kernel =1 so we are taking the average
+            int sum=image[i][j];
+            for (int k = 0; k < 8; ++k) {
+                sum+=image[i+dx8[k]][j+dy8[k]];
+            }
+            NewImage[i][j]=sum/9;
+        }
+    }
+    for (int i = 1; i < SIZE-1; ++i) {
+        for (int j = 1; j < SIZE-1; ++j) {
+            image[i][j]=NewImage[i][j];
+            if(i==1){                       //handel border
+                image[i-1][j]=image[i][j];
+            }
+            if(i==SIZE-2){
+                image[i+1][j]=image[i][j];
+            }
+            if(j==1){
+                image[i][j-1]=image[i][j];
+            }
+            if(j==SIZE-2){
+                image[i][j+1]=image[i][j];
+            }
+        }
+    }
 }
 
 void  Crop_Image()
