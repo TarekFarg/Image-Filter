@@ -45,7 +45,7 @@ int main() {
     int choice=1;
     cout<<"1-Black & White Filter\n2-Invert Filter\n3-Merge Filter \n4-Flip Image\n5-Rotate Image \n6-Darken and Lighten Image\n7-Detect Image Edges \n8-Enlarge Image\n9-Shrink Image\n10-Mirror 1/2 Image\n11-Shuffle Image\n12-Blur Image\n13-Crop Image\n14-Skew Image Right  \n15-Skew Image Up  \n16-Save the image to a file\n";
     while (choice!=0){
-        cout<<"Please select a filter to apply or 0 to exit: \n";
+        cout<<"Please select a filter to apply or 16 to save or 0 to exit: \n";
         cin>>choice;
         switch (choice) {
             case 0:
@@ -141,7 +141,7 @@ void saveImage () {
     writeGSBMP(imageFileName, image);
 }
 
-void copyImageToSec()
+void copyImageToSec() // make image = SecImage
 {
     for (int i = 0; i < SIZE; ++i) {
         for (int j = 0; j < SIZE; ++j) {
@@ -155,9 +155,9 @@ void BlackandWhite()  {
     for (int i = 0; i < SIZE ; ++i) {
         for (int j = 0; j < SIZE; ++j) {
             if(image[i][j]<127)
-                image[i][j]=0;
+                image[i][j]=0;      // make it black
             else
-                image[i][j]=255;
+                image[i][j]=255;        // make it white
         }
     }
 }
@@ -180,7 +180,7 @@ void  Flip_Image()
     cout << "Flip (h)orizontally or (v)ertically ? \n" ;
     char c ;
     cin >> c ;
-    if(c == 'h') // horizontally
+    if(c == 'h')    // horizontally
     {
         for (int i = 0; i < SIZE; ++i)
         {
@@ -191,7 +191,7 @@ void  Flip_Image()
 
         }
     }
-    else // vertically
+    else    // vertically
     {
         for (int i = 0; i < SIZE/2; ++i)
         {
@@ -216,11 +216,11 @@ void Detect_Image_Edges()
         for (int j = 0; j < SIZE ; ++j) {
             if(last != image[i][j])
             {
-                last = image[i][j] ;
-                image[i][j] = 0 ;
+                last = image[i][j] ;        // update the last
+                image[i][j] = 0 ;           // make it black
             }
             else
-                image[i][j] = 255 ;
+                image[i][j] = 255 ;         // make it white
         }
     }
 
@@ -280,7 +280,7 @@ void Mirror_half_Image()
     {
         for (int i = 0 ; i < SIZE; ++i) {
             for (int j = SIZE/2; j < SIZE; ++j) {
-                image[i][j] = image[i][SIZE-j-1] ;
+                image[i][j] = image[i][SIZE-j-1] ;  // make the right side equal to the lift
             }
 
         }
@@ -289,7 +289,7 @@ void Mirror_half_Image()
     {
         for (int i = 0; i < SIZE; ++i) {
             for (int j = 0; j < SIZE/2; ++j) {
-                image[i][j] = image[i][SIZE-j-1] ;
+                image[i][j] = image[i][SIZE-j-1] ;  // make the left side equal to teh right
             }
         }
     }
@@ -297,7 +297,7 @@ void Mirror_half_Image()
     {
         for (int i = SIZE/2; i < SIZE; ++i) {
             for (int j = 0; j < SIZE; ++j) {
-                image[i][j] = image[SIZE-i-1][j] ;
+                image[i][j] = image[SIZE-i-1][j] ;  // make the down equal to the up
             }
         }
     }
@@ -305,7 +305,7 @@ void Mirror_half_Image()
     {
         for (int i = 0; i < SIZE/2; ++i) {
             for (int j = 0; j < SIZE; ++j) {
-                image[i][j] = image[SIZE-i-1][j] ;
+                image[i][j] = image[SIZE-i-1][j] ;  // make the up equal to the down
             }
 
         }
@@ -356,8 +356,8 @@ void  Crop_Image()
     cin >> x >> y >> l >> w ;
     for (int i = 0; i < SIZE; ++i) {
         for (int j = 0; j < SIZE; ++j) {
-            if(i<x || i>x+l || j<y || j>y+w) // out of the rectangle
-                image[i][j] = 255 ; // make it white
+            if(i<x || i>x+l || j<y || j>y+w)    // out of the rectangle
+                image[i][j] = 255 ;             // make it white
         }
     }
 }
